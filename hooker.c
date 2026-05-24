@@ -1206,6 +1206,8 @@ void* hooker_hook(void* address_, void* new_proc, size_t flags)
     size_t jmp_len = hooker_instruction_length(HOOKER_HOOK_JMP | HOOKER_HOOK_FAT);
     size_t call_len = hooker_instruction_length(HOOKER_HOOK_CALL | HOOKER_HOOK_FAT);
     size_t save_bytes = hooker_get_mnemonic_size(address, jmp_len);
+    if (save_bytes == 0 || save_bytes > 64)
+        return 0;
 
     // CALL Bridge: [len(original bytes)] [call hook] [original bytes] [jmp address+len(original bytes)]
     // JUMP Bridge: [len(original bytes)]             [original bytes] [jmp address+len(original bytes)]
